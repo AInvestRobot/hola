@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>العد التنازلي</title>
+  <style>
+    :root{ --bg:#0f172a; --card:#0b1220; --accent:#22c55e; --text:#e6eef8; }
+    *{box-sizing:border-box;font-family:Arial, "Segoe UI", Tahoma; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg,#071029 0%, #0f172a 100%);
+      color:var(--text);
+    }
+    .card{
+      width:330px;
+      padding:28px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      box-shadow:0 8px 30px rgba(2,6,23,0.7);
+      text-align:center;
+    }
+    h1{margin:0 0 12px;font-size:20px;}
+    .count{
+      font-size:72px;
+      font-weight:700;
+      margin:8px 0 14px;
+      color:var(--accent);
+      letter-spacing:4px;
+    }
+    .info{font-size:14px; opacity:0.85;}
+    .bar {
+      height:10px;
+      width:100%;
+      background:rgba(255,255,255,0.06);
+      border-radius:8px;
+      overflow:hidden;
+      margin-top:18px;
+    }
+    .fill {
+      height:100%;
+      width:100%;
+      transform-origin:left;
+      background:linear-gradient(90deg, rgba(34,197,94,0.9), rgba(16,185,129,0.85));
+      transform:scaleX(1);
+      transition:transform 0.4s linear;
+    }
+    .small{font-size:12px;margin-top:10px;color:#a8c0d8;}
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-live="polite">
+    <h1>ستنتقل الصفحة بعد انتهاء العدّ التنازلي</h1>
+    <div id="count" class="count" aria-label="العد التنازلي">10</div>
+    <div class="info">الانتقال تلقائياً بعد وصول العدد إلى 1</div>
+
+    <div class="bar" aria-hidden="true">
+      <div id="fill" class="fill"></div>
+    </div>
+    <div class="small">بإمكانك إغلاق النافذة أو الرجوع إذا أردت</div>
+  </div>
+
+  <script>
+    // إعدادات العدّ
+    const start = 10;                 // ابدأ من 10 (يمكن تغييره)
+    let current = start;
+    const durationSeconds = start;    // المدة الكاملة بالثواني
+    const countEl = document.getElementById('count');
+    const fillEl  = document.getElementById('fill');
+
+    // عرض القيمة الابتدائية
+    countEl.textContent = current;
+
+    // وظيفة التحديث كل ثانية
+    const interval = setInterval(() => {
+      current = current - 1;
+      if (current < 0) current = 0; // وقاية
+      countEl.textContent = current;
+
+      // تحريك شريط التقدم (بقيّة النسبة)
+      const ratio = current / start;
+      fillEl.style.transform = 'scaleX(' + ratio + ')';
+
+      // عندما ينتهي العدّ ننتقل إلى finished.html
+      if (current <= 0) {
+        clearInterval(interval);
+        // بدّل السطر التالي لتوجيه إلى اسم الصفحة التي تريدها
+        // استخدم replace حتى لا يبقى صفحة العدّ في سجل التاريخ
+        window.location.replace('sdfdvs.html');
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
